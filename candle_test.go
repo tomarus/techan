@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -18,17 +18,17 @@ func TestCandle_AddTrade(t *testing.T) {
 		End:   now.Add(time.Minute),
 	})
 
-	candle.AddTrade(big.NewDecimal(1), big.NewDecimal(2)) // Open
-	candle.AddTrade(big.NewDecimal(1), big.NewDecimal(5)) // High
-	candle.AddTrade(big.NewDecimal(1), big.NewDecimal(1)) // Low
-	candle.AddTrade(big.NewDecimal(1), big.NewDecimal(3)) // No Diff
-	candle.AddTrade(big.NewDecimal(1), big.NewDecimal(3)) // Close
+	candle.AddTrade(decimal.NewFromInt(1), decimal.NewFromInt(2)) // Open
+	candle.AddTrade(decimal.NewFromInt(1), decimal.NewFromInt(5)) // High
+	candle.AddTrade(decimal.NewFromInt(1), decimal.NewFromInt(1)) // Low
+	candle.AddTrade(decimal.NewFromInt(1), decimal.NewFromInt(3)) // No Diff
+	candle.AddTrade(decimal.NewFromInt(1), decimal.NewFromInt(3)) // Close
 
-	assert.EqualValues(t, 2, candle.OpenPrice.Float())
-	assert.EqualValues(t, 5, candle.MaxPrice.Float())
-	assert.EqualValues(t, 1, candle.MinPrice.Float())
-	assert.EqualValues(t, 3, candle.ClosePrice.Float())
-	assert.EqualValues(t, 5, candle.Volume.Float())
+	assert.EqualValues(t, "2", candle.OpenPrice.String())
+	assert.EqualValues(t, "5", candle.MaxPrice.String())
+	assert.EqualValues(t, "1", candle.MinPrice.String())
+	assert.EqualValues(t, "3", candle.ClosePrice.String())
+	assert.EqualValues(t, "5", candle.Volume.String())
 	assert.EqualValues(t, 5, candle.TradeCount)
 }
 
@@ -39,11 +39,11 @@ func TestCandle_String(t *testing.T) {
 		End:   now.Add(time.Minute),
 	})
 
-	candle.ClosePrice = big.NewFromString("1")
-	candle.OpenPrice = big.NewFromString("2")
-	candle.MaxPrice = big.NewFromString("3")
-	candle.MinPrice = big.NewFromString("0")
-	candle.Volume = big.NewFromString("10")
+	candle.ClosePrice = decimal.NewFromInt(1)
+	candle.OpenPrice = decimal.NewFromInt(2)
+	candle.MaxPrice = decimal.NewFromInt(3)
+	candle.MinPrice = decimal.NewFromInt(0)
+	candle.Volume = decimal.NewFromInt(10)
 
 	expected := strings.TrimSpace(fmt.Sprintf(`
 Time:	%s

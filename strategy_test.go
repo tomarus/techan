@@ -3,7 +3,6 @@ package techan
 import (
 	"testing"
 
-	"github.com/sdcoffey/big"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -31,8 +30,8 @@ func TestRuleStrategy_ShouldEnter(t *testing.T) {
 
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.ONE,
+			Amount: decimalONE,
+			Price:  decimalONE,
 		})
 
 		s := RuleStrategy{
@@ -74,8 +73,8 @@ func TestRuleStrategy_ShouldExit(t *testing.T) {
 
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.ONE,
+			Amount: decimalONE,
+			Price:  decimalONE,
 		})
 
 		s := RuleStrategy{
@@ -104,8 +103,8 @@ func TestRuleStrategy_ShouldExit(t *testing.T) {
 
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.ONE,
+			Amount: decimalONE,
+			Price:  decimalONE,
 		})
 
 		s := RuleStrategy{

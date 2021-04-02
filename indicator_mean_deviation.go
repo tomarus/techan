@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
 type meanDeviationIndicator struct {
 	Indicator
@@ -18,18 +18,18 @@ func NewMeanDeviationIndicator(indicator Indicator, window int) Indicator {
 	}
 }
 
-func (mdi meanDeviationIndicator) Calculate(index int) big.Decimal {
+func (mdi meanDeviationIndicator) Calculate(index int) decimal.Decimal {
 	if index < mdi.window-1 {
-		return big.ZERO
+		return decimalZERO
 	}
 
 	average := mdi.movingAverage.Calculate(index)
 	start := Max(0, index-mdi.window+1)
-	absoluteDeviations := big.NewDecimal(0)
+	absoluteDeviations := decimal.NewFromInt(0)
 
 	for i := start; i <= index; i++ {
 		absoluteDeviations = absoluteDeviations.Add(average.Sub(mdi.Indicator.Calculate(i)).Abs())
 	}
 
-	return absoluteDeviations.Div(big.NewDecimal(float64(Min(mdi.window, index-start+1))))
+	return absoluteDeviations.Div(decimal.NewFromFloat(float64(Min(mdi.window, index-start+1))))
 }

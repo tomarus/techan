@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
 type fixedIndicator []float64
 
@@ -9,6 +9,6 @@ func NewFixedIndicator(vals ...float64) Indicator {
 	return fixedIndicator(vals)
 }
 
-func (fi fixedIndicator) Calculate(index int) big.Decimal {
-	return big.NewDecimal(fi[index])
+func (fi fixedIndicator) Calculate(index int) decimal.Decimal {
+	return decimal.NewFromFloat(fi[index])
 }

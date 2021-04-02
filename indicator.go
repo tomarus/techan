@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import big "github.com/shopspring/decimal"
 
 // Indicator is an interface that describes a methodology by which to analyze a trading record for a specific property
 // or trend. For example. MovingAverageIndicator implements the Indicator interface and, for a given index in the timeSeries,

@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
 type averageTrueRangeIndicator struct {
 	series *TimeSeries
@@ -17,16 +17,16 @@ func NewAverageTrueRangeIndicator(series *TimeSeries, window int) Indicator {
 	}
 }
 
-func (atr averageTrueRangeIndicator) Calculate(index int) big.Decimal {
+func (atr averageTrueRangeIndicator) Calculate(index int) decimal.Decimal {
 	if index < atr.window {
-		return big.ZERO
+		return decimalZERO
 	}
 
-	sum := big.ZERO
+	sum := decimalZERO
 
 	for i := index; i > index-atr.window; i-- {
 		sum = sum.Add(NewTrueRangeIndicator(atr.series).Calculate(i))
 	}
 
-	return sum.Div(big.NewFromInt(atr.window))
+	return sum.Div(decimal.NewFromInt(int64(atr.window)))
 }

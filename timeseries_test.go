@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,7 +20,7 @@ func TestTimeSeries_AddCandle(t *testing.T) {
 		ts := NewTimeSeries()
 
 		candle := NewCandle(NewTimePeriod(time.Now(), time.Minute))
-		candle.ClosePrice = big.NewDecimal(1)
+		candle.ClosePrice = decimal.NewFromInt(1)
 
 		ts.AddCandle(candle)
 
@@ -32,13 +32,13 @@ func TestTimeSeries_AddCandle(t *testing.T) {
 
 		now := time.Now()
 		candle := NewCandle(NewTimePeriod(now, time.Minute))
-		candle.ClosePrice = big.NewDecimal(1)
+		candle.ClosePrice = decimal.NewFromInt(1)
 
 		ts.AddCandle(candle)
 		then := now.Add(-time.Minute * 10)
 
 		nextCandle := NewCandle(NewTimePeriod(then, time.Minute))
-		candle.ClosePrice = big.NewDecimal(2)
+		candle.ClosePrice = decimal.NewFromInt(2)
 
 		ts.AddCandle(nextCandle)
 
@@ -52,23 +52,25 @@ func TestTimeSeries_LastCandle(t *testing.T) {
 
 	now := time.Now()
 	candle := NewCandle(NewTimePeriod(now, time.Minute))
-	candle.ClosePrice = big.NewDecimal(1)
+	candle.ClosePrice = decimal.NewFromInt(1)
 
 	ts.AddCandle(candle)
 
 	assert.EqualValues(t, now.UnixNano(), ts.LastCandle().Period.Start.UnixNano())
-	assert.EqualValues(t, 1, ts.LastCandle().ClosePrice.Float())
+	f, _ := ts.LastCandle().ClosePrice.Float64()
+	assert.EqualValues(t, 1, f)
 
 	next := time.Now().Add(time.Minute)
 	newCandle := NewCandle(NewTimePeriod(next, time.Minute))
-	newCandle.ClosePrice = big.NewDecimal(2)
+	newCandle.ClosePrice = decimal.NewFromInt(2)
 
 	ts.AddCandle(newCandle)
 
 	assert.Len(t, ts.Candles, 2)
 
 	assert.EqualValues(t, next.UnixNano(), ts.LastCandle().Period.Start.UnixNano())
-	assert.EqualValues(t, 2, ts.LastCandle().ClosePrice.Float())
+	f, _ = ts.LastCandle().ClosePrice.Float64()
+	assert.EqualValues(t, 2, f)
 }
 
 func TestTimeSeries_LastIndex(t *testing.T) {

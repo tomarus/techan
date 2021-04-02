@@ -3,7 +3,6 @@ package techan
 import (
 	"testing"
 
-	"github.com/sdcoffey/big"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -20,8 +19,8 @@ func TestPositionNewRule(t *testing.T) {
 
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.ONE,
+			Amount: decimalONE,
+			Price:  decimalONE,
 		})
 
 		rule := PositionNewRule{}
@@ -44,8 +43,8 @@ func TestPositionOpenRule(t *testing.T) {
 
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.ONE,
+			Amount: decimalONE,
+			Price:  decimalONE,
 		})
 
 		rule := PositionOpenRule{}

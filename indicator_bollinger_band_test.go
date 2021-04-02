@@ -4,12 +4,14 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
-func decimalAlmostEquals(t *testing.T, expected, actual big.Decimal, epsilon float64) {
-	assert.InEpsilon(t, expected.Float(), actual.Float(), epsilon)
+func decimalAlmostEquals(t *testing.T, expected, actual decimal.Decimal, epsilon float64) {
+	exp, _ := expected.Float64()
+	act, _ := actual.Float64()
+	assert.InEpsilon(t, exp, act, epsilon)
 }
 
 // number data from https://school.stockcharts.com/doku.php?id=technical_indicators:bollinger_bands
@@ -112,10 +114,15 @@ func TestBollingerBandIndicator(t *testing.T) {
 
 	for i := window - 1; i < len(ts.Candles); i++ {
 		j := i - (window - 1)
-		decimalAlmostEquals(t, big.NewFromString(SMAs[j]), sma.Calculate(i), 0.01)
-		decimalAlmostEquals(t, big.NewFromString(STDEVs[j]), wstd.Calculate(i), 0.01)
-		decimalAlmostEquals(t, big.NewFromString(BBUPs[j]), bbUP.Calculate(i), 0.01)
-		decimalAlmostEquals(t, big.NewFromString(BBLOs[j]), bbLO.Calculate(i), 0.01)
-		decimalAlmostEquals(t, big.NewFromString(BBWs[j]), bbUP.Calculate(i).Sub(bbLO.Calculate((i))), 0.01)
+		tsma, _ := decimal.NewFromString(SMAs[j])
+		stdev, _ := decimal.NewFromString(STDEVs[j])
+		bbup, _ := decimal.NewFromString(BBUPs[j])
+		bblo, _ := decimal.NewFromString(BBLOs[j])
+		bbw, _ := decimal.NewFromString(BBWs[j])
+		decimalAlmostEquals(t, tsma, sma.Calculate(i), 0.01)
+		decimalAlmostEquals(t, stdev, wstd.Calculate(i), 0.01)
+		decimalAlmostEquals(t, bbup, bbUP.Calculate(i), 0.01)
+		decimalAlmostEquals(t, bblo, bbLO.Calculate(i), 0.01)
+		decimalAlmostEquals(t, bbw, bbUP.Calculate(i).Sub(bbLO.Calculate((i))), 0.01)
 	}
 }

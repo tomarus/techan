@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
 type modifiedMovingAverageIndicator struct {
 	indicator   Indicator
@@ -15,12 +15,12 @@ func NewMMAIndicator(indicator Indicator, window int) Indicator {
 	return &modifiedMovingAverageIndicator{
 		indicator:   indicator,
 		window:      window,
-		resultCache: make([]*big.Decimal, 10000),
+		resultCache: make([]*decimal.Decimal, 10000),
 	}
 }
 
-func (mma *modifiedMovingAverageIndicator) Calculate(index int) big.Decimal {
-	if cachedValue := returnIfCached(mma, index, func(i int) big.Decimal {
+func (mma *modifiedMovingAverageIndicator) Calculate(index int) decimal.Decimal {
+	if cachedValue := returnIfCached(mma, index, func(i int) decimal.Decimal {
 		return NewSimpleMovingAverage(mma.indicator, mma.window).Calculate(i)
 	}); cachedValue != nil {
 		return *cachedValue
@@ -28,10 +28,9 @@ func (mma *modifiedMovingAverageIndicator) Calculate(index int) big.Decimal {
 
 	todayVal := mma.indicator.Calculate(index)
 	lastVal := mma.Calculate(index - 1)
+	result := lastVal.Add(decimal.NewFromFloat(1.0 / float64(mma.window)).Mul(todayVal.Sub(lastVal)))
 
-	result := lastVal.Add(big.NewDecimal(1.0 / float64(mma.window)).Mul(todayVal.Sub(lastVal)))
 	cacheResult(mma, index, result)
-
 	return result
 }
 

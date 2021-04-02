@@ -3,7 +3,7 @@ package techan
 import (
 	"time"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 )
 
 // OrderSide is a simple enumeration representing the side of an Order (buy or sell)
@@ -19,7 +19,7 @@ const (
 type Order struct {
 	Side          OrderSide
 	Security      string
-	Price         big.Decimal
-	Amount        big.Decimal
+	Price         decimal.Decimal
+	Amount        decimal.Decimal
 	ExecutionTime time.Time
 }

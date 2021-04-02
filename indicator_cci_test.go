@@ -24,6 +24,6 @@ func TestCommidityChannelIndexIndicator_Calculate(t *testing.T) {
 		"-10.6789", "-11.4710", "-29.2567", "-128.6000", "-72.7273"}
 
 	for i, result := range results {
-		assert.EqualValues(t, result, cci.Calculate(i+19).FormattedString(4))
+		assert.EqualValues(t, result, cci.Calculate(i+19).StringFixed(4))
 	}
 }

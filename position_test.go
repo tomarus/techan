@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,8 +17,8 @@ func TestPosition_NoOrders_IsNew(t *testing.T) {
 func TestPosition_NewPosition_IsOpen(t *testing.T) {
 	order := Order{
 		Side:   BUY,
-		Amount: big.ONE,
-		Price:  big.NewFromString("2"),
+		Amount: decimalONE,
+		Price:  decimal.NewFromInt(2),
 	}
 
 	position := NewPosition(order)
@@ -30,8 +30,8 @@ func TestPosition_NewPosition_IsOpen(t *testing.T) {
 func TestNewPosition_WithBuy_IsLong(t *testing.T) {
 	order := Order{
 		Side:   BUY,
-		Amount: big.ONE,
-		Price:  big.NewFromString("2"),
+		Amount: decimalONE,
+		Price:  decimal.NewFromInt(2),
 	}
 
 	position := NewPosition(order)
@@ -41,8 +41,8 @@ func TestNewPosition_WithBuy_IsLong(t *testing.T) {
 func TestNewPosition_WithSell_IsShort(t *testing.T) {
 	order := Order{
 		Side:   SELL,
-		Amount: big.ONE,
-		Price:  big.NewFromString("2"),
+		Amount: decimalONE,
+		Price:  decimal.NewFromInt(2),
 	}
 
 	position := NewPosition(order)
@@ -54,8 +54,8 @@ func TestPosition_Enter(t *testing.T) {
 
 	order := Order{
 		Side:   BUY,
-		Amount: big.ONE,
-		Price:  big.NewFromString("2"),
+		Amount: decimalONE,
+		Price:  decimal.NewFromInt(2),
 	}
 
 	position.Enter(order)
@@ -71,8 +71,8 @@ func TestPosition_Close(t *testing.T) {
 
 	entranceOrder := Order{
 		Side:   BUY,
-		Amount: big.ONE,
-		Price:  big.NewFromString("2"),
+		Amount: decimalONE,
+		Price:  decimal.NewFromInt(2),
 	}
 
 	position.Enter(entranceOrder)
@@ -84,8 +84,8 @@ func TestPosition_Close(t *testing.T) {
 
 	exitOrder := Order{
 		Side:          SELL,
-		Amount:        big.ONE,
-		Price:         big.NewFromString("4"),
+		Amount:        decimalONE,
+		Price:         decimal.NewFromInt(4),
 		ExecutionTime: time.Now(),
 	}
 
@@ -109,13 +109,13 @@ func TestPosition_CostBasis(t *testing.T) {
 
 		order := Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.NewFromString("2"),
+			Amount: decimalONE,
+			Price:  decimal.NewFromInt(2),
 		}
 
 		p.Enter(order)
 
-		assert.EqualValues(t, "2.00", p.CostBasis().FormattedString(2))
+		assert.EqualValues(t, "2.00", p.CostBasis().StringFixed(2))
 	})
 }
 
@@ -125,13 +125,13 @@ func TestPosition_ExitValue(t *testing.T) {
 
 		order := Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.NewFromString("2"),
+			Amount: decimalONE,
+			Price:  decimal.NewFromInt(2),
 		}
 
 		p.Enter(order)
 
-		assert.EqualValues(t, "0.00", p.ExitValue().FormattedString(2))
+		assert.EqualValues(t, "0.00", p.ExitValue().StringFixed(2))
 	})
 
 	t.Run("when closed, returns exit value", func(t *testing.T) {
@@ -139,20 +139,20 @@ func TestPosition_ExitValue(t *testing.T) {
 
 		order := Order{
 			Side:   BUY,
-			Amount: big.ONE,
-			Price:  big.NewFromString("2"),
+			Amount: decimalONE,
+			Price:  decimal.NewFromInt(2),
 		}
 
 		p.Enter(order)
 
 		order = Order{
 			Side:   SELL,
-			Amount: big.ONE,
-			Price:  big.NewFromString("12"),
+			Amount: decimalONE,
+			Price:  decimal.NewFromInt(12),
 		}
 
 		p.Exit(order)
 
-		assert.EqualValues(t, "12.00", p.ExitValue().FormattedString(2))
+		assert.EqualValues(t, "12.00", p.ExitValue().StringFixed(2))
 	})
 }

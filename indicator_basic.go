@@ -1,6 +1,9 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import (
+	"github.com/shopspring/decimal"
+	big "github.com/shopspring/decimal"
+)
 
 type volumeIndicator struct {
 	*TimeSeries
@@ -11,7 +14,7 @@ func NewVolumeIndicator(series *TimeSeries) Indicator {
 	return volumeIndicator{series}
 }
 
-func (vi volumeIndicator) Calculate(index int) big.Decimal {
+func (vi volumeIndicator) Calculate(index int) decimal.Decimal {
 	return vi.Candles[index].Volume
 }
 
@@ -24,7 +27,7 @@ func NewClosePriceIndicator(series *TimeSeries) Indicator {
 	return closePriceIndicator{series}
 }
 
-func (cpi closePriceIndicator) Calculate(index int) big.Decimal {
+func (cpi closePriceIndicator) Calculate(index int) decimal.Decimal {
 	return cpi.Candles[index].ClosePrice
 }
 
@@ -39,7 +42,7 @@ func NewHighPriceIndicator(series *TimeSeries) Indicator {
 	}
 }
 
-func (hpi highPriceIndicator) Calculate(index int) big.Decimal {
+func (hpi highPriceIndicator) Calculate(index int) decimal.Decimal {
 	return hpi.Candles[index].MaxPrice
 }
 
@@ -54,7 +57,7 @@ func NewLowPriceIndicator(series *TimeSeries) Indicator {
 	}
 }
 
-func (lpi lowPriceIndicator) Calculate(index int) big.Decimal {
+func (lpi lowPriceIndicator) Calculate(index int) decimal.Decimal {
 	return lpi.Candles[index].MinPrice
 }
 
@@ -69,7 +72,7 @@ func NewOpenPriceIndicator(series *TimeSeries) Indicator {
 	}
 }
 
-func (opi openPriceIndicator) Calculate(index int) big.Decimal {
+func (opi openPriceIndicator) Calculate(index int) decimal.Decimal {
 	return opi.Candles[index].OpenPrice
 }
 
@@ -83,7 +86,7 @@ func NewTypicalPriceIndicator(series *TimeSeries) Indicator {
 	return typicalPriceIndicator{series}
 }
 
-func (tpi typicalPriceIndicator) Calculate(index int) big.Decimal {
+func (tpi typicalPriceIndicator) Calculate(index int) decimal.Decimal {
 	numerator := tpi.Candles[index].MaxPrice.Add(tpi.Candles[index].MinPrice).Add(tpi.Candles[index].ClosePrice)
-	return numerator.Div(big.NewFromString("3"))
+	return numerator.Div(big.NewFromInt(3))
 }

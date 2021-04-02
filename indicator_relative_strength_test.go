@@ -1,10 +1,8 @@
 package techan
 
 import (
-	"math"
 	"testing"
 
-	"github.com/sdcoffey/big"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -53,5 +51,5 @@ func TestRelativeStrengthIndicator(t *testing.T) {
 func TestRelativeStrengthIndicatorNoPriceChange(t *testing.T) {
 	close := NewClosePriceIndicator(mockTimeSeries("42.0", "42.0"))
 	rsInd := NewRelativeStrengthIndicator(close, 2)
-	assert.Equal(t, big.NewDecimal(math.Inf(1)).FormattedString(2), rsInd.Calculate(1).FormattedString(2))
+	assert.Equal(t, plusInf.StringFixed(2), rsInd.Calculate(1).StringFixed(2))
 }

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -19,12 +19,12 @@ func TestVolumeIndicator_Calculate(t *testing.T) {
 		Start: time.Now(),
 		End:   time.Now().Add(time.Minute),
 	})
-	candle.Volume = big.NewFromString("1.2080")
+	candle.Volume, _ = decimal.NewFromString("1.2080")
 
 	series.AddCandle(candle)
 
 	indicator := NewVolumeIndicator(series)
-	assert.EqualValues(t, "1.208", indicator.Calculate(0).FormattedString(3))
+	assert.EqualValues(t, "1.208", indicator.Calculate(0).StringFixed(3))
 }
 
 func TestTypicalPriceIndicator_Calculate(t *testing.T) {
@@ -34,13 +34,13 @@ func TestTypicalPriceIndicator_Calculate(t *testing.T) {
 		Start: time.Now(),
 		End:   time.Now().Add(time.Minute),
 	})
-	candle.MinPrice = big.NewFromString("1.2080")
-	candle.MaxPrice = big.NewFromString("1.22")
-	candle.ClosePrice = big.NewFromString("1.215")
+	candle.MinPrice, _ = decimal.NewFromString("1.2080")
+	candle.MaxPrice, _ = decimal.NewFromString("1.22")
+	candle.ClosePrice, _ = decimal.NewFromString("1.215")
 
 	series.AddCandle(candle)
 
 	typicalPrice := NewTypicalPriceIndicator(series).Calculate(0)
 
-	assert.EqualValues(t, "1.2143", typicalPrice.FormattedString(4))
+	assert.EqualValues(t, "1.2143", typicalPrice.StringFixed(4))
 }

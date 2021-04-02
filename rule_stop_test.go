@@ -3,7 +3,7 @@ package techan
 import (
 	"testing"
 
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -22,8 +22,8 @@ func TestStopLossRule(t *testing.T) {
 		record := NewTradingRecord()
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.NewFromString("10"),
-			Price:  big.ONE,
+			Amount: decimal.NewFromInt(10),
+			Price:  decimalONE,
 		})
 
 		series := mockTimeSeriesFl(10, 9) // Lose 10%
@@ -38,8 +38,8 @@ func TestStopLossRule(t *testing.T) {
 
 		record.Operate(Order{
 			Side:   BUY,
-			Amount: big.NewFromString("10"),
-			Price:  big.ONE,
+			Amount: decimal.NewFromInt(10),
+			Price:  decimalONE,
 		})
 
 		series := mockTimeSeriesFl(10, 10.1) // Gain 1%

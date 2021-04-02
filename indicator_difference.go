@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import big "github.com/shopspring/decimal"
 
 type differenceIndicator struct {
 	minuend    Indicator

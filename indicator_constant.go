@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
 type constantIndicator float64
 
@@ -10,6 +10,6 @@ func NewConstantIndicator(constant float64) Indicator {
 	return constantIndicator(constant)
 }
 
-func (ci constantIndicator) Calculate(index int) big.Decimal {
-	return big.NewDecimal(float64(ci))
+func (ci constantIndicator) Calculate(index int) decimal.Decimal {
+	return decimal.NewFromFloat(float64(ci))
 }

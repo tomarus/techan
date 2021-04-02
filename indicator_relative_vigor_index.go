@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
 type relativeVigorIndexIndicator struct {
 	numerator   Indicator
@@ -18,26 +18,26 @@ func NewRelativeVigorIndexIndicator(series *TimeSeries) Indicator {
 	}
 }
 
-func (rvii relativeVigorIndexIndicator) Calculate(index int) big.Decimal {
+func (rvii relativeVigorIndexIndicator) Calculate(index int) decimal.Decimal {
 	if index < 3 {
-		return big.ZERO
+		return decimalZERO
 	}
 
-	two := big.NewFromString("2")
+	two := decimal.NewFromInt(2)
 
 	a := rvii.numerator.Calculate(index)
 	b := rvii.numerator.Calculate(index - 1).Mul(two)
 	c := rvii.numerator.Calculate(index - 2).Mul(two)
 	d := rvii.numerator.Calculate(index - 3)
 
-	num := (a.Add(b).Add(c).Add(d)).Div(big.NewFromString("6"))
+	num := (a.Add(b).Add(c).Add(d)).Div(decimal.NewFromInt(6))
 
 	e := rvii.denominator.Calculate(index)
 	f := rvii.denominator.Calculate(index - 1).Mul(two)
 	g := rvii.denominator.Calculate(index - 2).Mul(two)
 	h := rvii.denominator.Calculate(index - 3)
 
-	denom := (e.Add(f).Add(g).Add(h)).Div(big.NewFromString("6"))
+	denom := (e.Add(f).Add(g).Add(h)).Div(decimal.NewFromInt(6))
 
 	return num.Div(denom)
 }
@@ -54,15 +54,15 @@ func NewRelativeVigorSignalLine(series *TimeSeries) Indicator {
 	}
 }
 
-func (rvsn relativeVigorIndexSignalLine) Calculate(index int) big.Decimal {
+func (rvsn relativeVigorIndexSignalLine) Calculate(index int) decimal.Decimal {
 	if index < 3 {
-		return big.ZERO
+		return decimalZERO
 	}
 
 	rvi := rvsn.relativeVigorIndex.Calculate(index)
-	i := rvsn.relativeVigorIndex.Calculate(index - 1).Mul(big.NewFromString("2"))
-	j := rvsn.relativeVigorIndex.Calculate(index - 2).Mul(big.NewFromString("2"))
+	i := rvsn.relativeVigorIndex.Calculate(index - 1).Mul(decimal.NewFromInt(2))
+	j := rvsn.relativeVigorIndex.Calculate(index - 2).Mul(decimal.NewFromInt(2))
 	k := rvsn.relativeVigorIndex.Calculate(index - 3)
 
-	return (rvi.Add(i).Add(j).Add(k)).Div(big.NewFromString("6"))
+	return (rvi.Add(i).Add(j).Add(k)).Div(decimal.NewFromInt(6))
 }

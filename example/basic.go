@@ -4,8 +4,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/sdcoffey/big"
 	"github.com/sdcoffey/techan"
+	"github.com/shopspring/decimal"
 )
 
 // BasicEma is an example of how to create a basic Exponential moving average indicator
@@ -24,10 +24,10 @@ func BasicEma() techan.Indicator {
 		period := techan.NewTimePeriod(time.Unix(start, 0), time.Hour*24)
 
 		candle := techan.NewCandle(period)
-		candle.OpenPrice = big.NewFromString(datum[1])
-		candle.ClosePrice = big.NewFromString(datum[2])
-		candle.MaxPrice = big.NewFromString(datum[3])
-		candle.MinPrice = big.NewFromString(datum[4])
+		candle.OpenPrice, _ = decimal.NewFromString(datum[1])
+		candle.ClosePrice, _ = decimal.NewFromString(datum[2])
+		candle.MaxPrice, _ = decimal.NewFromString(datum[3])
+		candle.MinPrice, _ = decimal.NewFromString(datum[4])
 
 		series.AddCandle(candle)
 	}

@@ -1,8 +1,8 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import "github.com/shopspring/decimal"
 
-type resultCache []*big.Decimal
+type resultCache []*decimal.Decimal
 
 type cachedIndicator interface {
 	Indicator
@@ -11,7 +11,7 @@ type cachedIndicator interface {
 	windowSize() int
 }
 
-func cacheResult(indicator cachedIndicator, index int, val big.Decimal) {
+func cacheResult(indicator cachedIndicator, index int, val decimal.Decimal) {
 	if index < len(indicator.cache()) {
 		indicator.cache()[index] = &val
 	} else if index == len(indicator.cache()) {
@@ -25,15 +25,15 @@ func cacheResult(indicator cachedIndicator, index int, val big.Decimal) {
 func expandResultCache(indicator cachedIndicator, newSize int) {
 	sizeDiff := newSize - len(indicator.cache())
 
-	expansion := make([]*big.Decimal, sizeDiff)
+	expansion := make([]*decimal.Decimal, sizeDiff)
 	indicator.setCache(append(indicator.cache(), expansion...))
 }
 
-func returnIfCached(indicator cachedIndicator, index int, firstValueFallback func(int) big.Decimal) *big.Decimal {
+func returnIfCached(indicator cachedIndicator, index int, firstValueFallback func(int) decimal.Decimal) *decimal.Decimal {
 	if index >= len(indicator.cache()) {
 		expandResultCache(indicator, index+1)
 	} else if index < indicator.windowSize()-1 {
-		return &big.ZERO
+		return &decimalZERO
 	} else if val := indicator.cache()[index]; val != nil {
 		return val
 	} else if index == indicator.windowSize()-1 {

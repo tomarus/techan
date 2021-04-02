@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import big "github.com/shopspring/decimal"
 
 // NewMaximumDrawdownIndicator returns a derivative Indicator which returns the maximum
 // drawdown of the underlying indicator over a window. Maximum drawdown is defined as the

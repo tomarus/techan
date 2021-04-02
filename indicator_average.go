@@ -1,6 +1,8 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import (
+	"github.com/shopspring/decimal"
+)
 
 type averageIndicator struct {
 	Indicator
@@ -25,6 +27,6 @@ func NewAverageLossesIndicator(indicator Indicator, window int) Indicator {
 	}
 }
 
-func (ai averageIndicator) Calculate(index int) big.Decimal {
-	return ai.Indicator.Calculate(index).Div(big.NewDecimal(float64(Min(index+1, ai.window))))
+func (ai averageIndicator) Calculate(index int) decimal.Decimal {
+	return ai.Indicator.Calculate(index).Div(decimal.NewFromFloat(float64(Min(index+1, ai.window))))
 }

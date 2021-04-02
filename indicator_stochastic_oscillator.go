@@ -1,9 +1,7 @@
 package techan
 
 import (
-	"math"
-
-	"github.com/sdcoffey/big"
+	"github.com/shopspring/decimal"
 )
 
 type kIndicator struct {
@@ -25,16 +23,16 @@ func NewFastStochasticIndicator(series *TimeSeries, timeframe int) Indicator {
 	}
 }
 
-func (k kIndicator) Calculate(index int) big.Decimal {
+func (k kIndicator) Calculate(index int) decimal.Decimal {
 	closeVal := k.closePrice.Calculate(index)
 	minVal := k.minValue.Calculate(index)
 	maxVal := k.maxValue.Calculate(index)
 
-	if minVal.EQ(maxVal) {
-		return big.NewDecimal(math.Inf(1))
+	if minVal.Equal(maxVal) {
+		return plusInf
 	}
 
-	return closeVal.Sub(minVal).Div(maxVal.Sub(minVal)).Mul(big.NewDecimal(100))
+	return closeVal.Sub(minVal).Div(maxVal.Sub(minVal)).Mul(decimal.NewFromInt(100))
 }
 
 type dIndicator struct {
@@ -49,6 +47,6 @@ func NewSlowStochasticIndicator(k Indicator, window int) Indicator {
 	return dIndicator{k, window}
 }
 
-func (d dIndicator) Calculate(index int) big.Decimal {
+func (d dIndicator) Calculate(index int) decimal.Decimal {
 	return NewSimpleMovingAverage(d.k, d.window).Calculate(index)
 }

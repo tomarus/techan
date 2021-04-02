@@ -26,11 +26,11 @@ func TestStandardDeviationIndicator(t *testing.T) {
 
 		stdDev := NewStandardDeviationIndicator(NewClosePriceIndicator(series))
 
-		assert.EqualValues(t, "4.00", stdDev.Calculate(1).FormattedString(2))
-		assert.EqualValues(t, "15.43", stdDev.Calculate(2).FormattedString(2))
-		assert.EqualValues(t, "13.65", stdDev.Calculate(3).FormattedString(2))
-		assert.EqualValues(t, "14.54", stdDev.Calculate(4).FormattedString(2))
-		assert.EqualValues(t, "13.27", stdDev.Calculate(5).FormattedString(2))
-		assert.EqualValues(t, "12.30", stdDev.Calculate(6).FormattedString(2))
+		assert.EqualValues(t, "4.00", stdDev.Calculate(1).StringFixed(2))
+		assert.EqualValues(t, "15.43", stdDev.Calculate(2).StringFixed(2))
+		assert.EqualValues(t, "13.65", stdDev.Calculate(3).StringFixed(2))
+		assert.EqualValues(t, "14.54", stdDev.Calculate(4).StringFixed(2))
+		assert.EqualValues(t, "13.27", stdDev.Calculate(5).StringFixed(2))
+		assert.EqualValues(t, "12.30", stdDev.Calculate(6).StringFixed(2))
 	})
 }

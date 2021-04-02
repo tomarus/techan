@@ -1,6 +1,8 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import (
+	"github.com/shopspring/decimal"
+)
 
 type windowedStandardDeviationIndicator struct {
 	Indicator
@@ -18,14 +20,15 @@ func NewWindowedStandardDeviationIndicator(ind Indicator, window int) Indicator 
 	}
 }
 
-func (sdi windowedStandardDeviationIndicator) Calculate(index int) big.Decimal {
+func (sdi windowedStandardDeviationIndicator) Calculate(index int) decimal.Decimal {
 	avg := sdi.movingAverage.Calculate(index)
-	variance := big.ZERO
+	variance := decimalZERO
 	for i := Max(0, index-sdi.window+1); i <= index; i++ {
-		pow := sdi.Indicator.Calculate(i).Sub(avg).Pow(2)
+		pow := sdi.Indicator.Calculate(i).Sub(avg).Pow(decimal.NewFromInt(2))
 		variance = variance.Add(pow)
 	}
 	realwindow := Min(sdi.window, index+1)
 
-	return variance.Div(big.NewDecimal(float64(realwindow))).Sqrt()
+	tmp := variance.Div(decimal.NewFromFloat(float64(realwindow)))
+	return Sqrt(tmp)
 }

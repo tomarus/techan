@@ -26,11 +26,11 @@ func TestVarianceIndicator(t *testing.T) {
 
 		varInd := NewVarianceIndicator(NewClosePriceIndicator(series))
 
-		assert.EqualValues(t, "16.00", varInd.Calculate(1).FormattedString(2))
-		assert.EqualValues(t, "238.22", varInd.Calculate(2).FormattedString(2))
-		assert.EqualValues(t, "186.19", varInd.Calculate(3).FormattedString(2))
-		assert.EqualValues(t, "211.36", varInd.Calculate(4).FormattedString(2))
-		assert.EqualValues(t, "176.22", varInd.Calculate(5).FormattedString(2))
-		assert.EqualValues(t, "151.27", varInd.Calculate(6).FormattedString(2))
+		assert.EqualValues(t, "16.00", varInd.Calculate(1).StringFixed(2))
+		assert.EqualValues(t, "238.22", varInd.Calculate(2).StringFixed(2))
+		assert.EqualValues(t, "186.19", varInd.Calculate(3).StringFixed(2))
+		assert.EqualValues(t, "211.36", varInd.Calculate(4).StringFixed(2))
+		assert.EqualValues(t, "176.22", varInd.Calculate(5).StringFixed(2))
+		assert.EqualValues(t, "151.27", varInd.Calculate(6).StringFixed(2))
 	})
 }

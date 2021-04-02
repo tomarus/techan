@@ -1,6 +1,6 @@
 package techan
 
-import "github.com/sdcoffey/big"
+import big "github.com/shopspring/decimal"
 
 type smaIndicator struct {
 	indicator Indicator
@@ -15,15 +15,15 @@ func NewSimpleMovingAverage(indicator Indicator, window int) Indicator {
 
 func (sma smaIndicator) Calculate(index int) big.Decimal {
 	if index < sma.window-1 {
-		return big.ZERO
+		return decimalZERO
 	}
 
-	sum := big.ZERO
+	sum := decimalZERO
 	for i := index; i > index-sma.window; i-- {
 		sum = sum.Add(sma.indicator.Calculate(i))
 	}
 
-	result := sum.Div(big.NewFromInt(sma.window))
+	result := sum.Div(big.NewFromInt(int64(sma.window)))
 
 	return result
 }
